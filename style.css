@@ -13,6 +13,9 @@
     --text-light-gray-color: #6b7280;
 
     --black-color: #000000;
+
+    --light-blue-color: #dbeafe;
+    --text-color-blue: #1e40af;
 }
 
 * {
@@ -71,6 +74,34 @@ body {
 
 .sidebar .nav-menu {
     flex: 1;
+    
+    display:flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    gap:0.5rem;
+    padding-block:2rem;
+
+}
+.sidebar .nav-menu .nav-item{
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    width:100%;
+    padding: 0.75rem 1rem;
+    
+    text-decoration: none;
+    color: var(--text-light-gray-color);
+    
+    border-radius: 0.5rem;
+    font-weight: 500;
+}
+.sidebar .nav-menu .nav-item:hover, .nav-item.active {
+    background-color: var(--light-blue-color);
+    color: var(--text-color-blue);
+}
+.sidebar .nav-menu .nav-item i{
+    font-size: 1.2rem;
 }
 
 .sidebar .add-transaction-btn {
