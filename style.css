@@ -492,6 +492,8 @@ td {
     display: flex;
     align-items: center;
     justify-content: center;
+
+    cursor: pointer;
 }
 
 .modal-content {

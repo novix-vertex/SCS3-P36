@@ -174,6 +174,12 @@ closeAddTransactionModalBtn.addEventListener("click", () => {
     showCard(null, addTransactionModal);
 });
 
+window.addEventListener("click", function (e) {
+    if (e.target === addTransactionModal) {
+        showCard(null, addTransactionModal);
+    }
+});
+
 function hasLoggedInUser() {
     const currentUser = JSON.parse(localStorage.getItem("currentUser"));
     if (currentUser) {
