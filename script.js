@@ -74,7 +74,7 @@ function registerUser(e) {
         password
     };
     users.push(user);
-    saveUsers();
+    saveUsers(users);
     Swal.fire(
         {
             icon: "success",
@@ -141,7 +141,7 @@ function loginUser(e) {
     localStorage.setItem("currentUser", JSON.stringify(currentUser));
     Swal.fire({
         icon: "success",
-        title: "Welcome!",
+        title: `Welcome ${currentUser.name}!`,
         text: "Login Successful"
     });
     loginForm.reset();
