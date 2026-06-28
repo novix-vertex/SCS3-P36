@@ -138,7 +138,7 @@ label.required::after {
     text-decoration: none;
 }
 
-.container .auth .auth-card.hidden {
+.container .auth.hidden, .container .internal.hidden, .container .auth .hidden {
     display: none;
 }
 
@@ -146,7 +146,6 @@ label.required::after {
     display: flex;
     height: 100vh;
     overflow: hidden;
-    display: none;
 }
 
 .sidebar {
