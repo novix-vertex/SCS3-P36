@@ -264,7 +264,19 @@ showTransactions();
 
 transactionTableData.addEventListener("click", function (e) {
     if (e.target.classList.contains("delete-ic")) {
-        deleteTransaction(Number(e.target.dataset.id));
+
+        Swal.fire({
+            title: "Delete transaction?",
+            text: "This action cannot be undone.",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonText: "Delete",
+            cancelButtonText: "Cancel"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                deleteTransaction(Number(e.target.dataset.id));
+            }
+        });
     }
 });
 
