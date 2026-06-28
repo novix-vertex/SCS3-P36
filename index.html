@@ -77,7 +77,53 @@
                     </div>
                 </div>
 
-                
+                <div class="dashboard-content">
+                    <div class="left">
+                        <div class="card transaction-table">
+                            <div class="card-header">
+                                <h3>All Transactions</h3>
+                            </div>
+                            <div class="search-box">
+                                <div class="search-bar">
+                                    <i class="search-ic ri-search-line"></i>
+                                    <input type="text" id="search-input" placeholder="Search transactions...">
+                                </div>
+                                <select id="type-filter">
+                                    <option value="all">All Types</option>
+                                    <option value="income">Income Only</option>
+                                    <option value="expense">Expense Only</option>
+                                </select>
+                            </div>
+                            <div class="table-box">
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th>DATE</th>
+                                            <th>DESCRIPTION</th>
+                                            <th>CATEGORY</th>
+                                            <th>AMOUNT</th>
+                                            <th>ACTIONS</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="transaction-table-data">
+                                        <tr>
+                                            <td>22-01-2025</td>
+                                            <td>Lorem ipsum dolor sit amet consectetur adipisicing elit. Non, eius.</td>
+                                            <td>Storage</td>
+                                            <td class="amount">$1000</td>
+                                            <td class="actions"><i class="edit-ic ri-pencil-fill"></i><i
+                                                    class="delete-ic ri-delete-bin-6-line"></i></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="right"></div>
+                </div>
+
+
             </section>
         </main>
     </div>

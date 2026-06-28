@@ -18,7 +18,7 @@
     --black-color: #000000;
 
     --light-blue-color: #dbeafe;
-    --text-color-blue: #1e40af;
+    --text-blue-color: #1e40af;
 
     --light-green-color: #dcfce7;
     --text-green-color: #166534;
@@ -110,7 +110,7 @@ body {
 .sidebar .nav-menu .nav-item:hover,
 .nav-item.active {
     background-color: var(--light-blue-color);
-    color: var(--text-color-blue);
+    color: var(--text-blue-color);
 }
 
 .sidebar .nav-menu .nav-item i {
@@ -190,7 +190,7 @@ main {
 
 .bg-blue {
     background: var(--light-blue-color);
-    color: var(--text-color-blue);
+    color: var(--text-blue-color);
 }
 
 .bg-green {
@@ -205,6 +205,13 @@ main {
 
 .view-section {
     padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.view-section.active {
+    display: flex;
 }
 
 .view-section .view-header {
@@ -229,17 +236,22 @@ main {
     gap: 1.25rem;
 }
 
-.view-section .view-stat-cards .card {
+.view-section .view-stat-cards .card,
+.dashboard-content .card {
     background-color: var(--card-background-color);
     border: 1px solid var(--border-color);
     border-radius: 0.75rem;
     padding: 1.25rem;
 
+}
+
+.view-section .view-stat-cards .card {
+
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
     align-items: flex-start;
-    gap:0.5rem;
+    gap: 0.5rem;
 }
 
 .view-section .view-stat-cards .card .card-icon {
@@ -252,12 +264,114 @@ main {
     justify-content: center;
 }
 
-.view-section .view-stat-cards .card p {
+.card p {
     color: var(--text-muted);
     font-size: 0.875rem;
-    padding-top:0.875rem;
+    padding-top: 0.875rem;
 }
 
-.view-section .view-stat-cards .card h3 {
+.card h3 {
     font-size: 1.5rem;
+}
+
+.dashboard-content {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 1.25rem;
+}
+
+
+.dashboard-content .card .card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.transaction-table {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    gap: 1rem;
+}
+
+.transaction-table .search-box {
+    display: flex;
+    gap: 0.75rem;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.transaction-table .search-box .search-bar {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    background-color: var(--background-color);
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+    width: 40%;
+}
+
+.transaction-table .search-box .search-bar .search-ic {
+    font-weight: bold;
+    font-size: 1rem;
+}
+
+.transaction-table .search-box .search-bar input {
+    border: none;
+    outline: none;
+    background: transparent;
+    width: 100%;
+    color: var(--text-color);
+}
+
+.transaction-table select {
+    padding: 0.5rem;
+    border: 1px solid var(--border-color);
+    border-radius: 0.5rem;
+    background: var(--background-color);
+    color: var(--text-color);
+    cursor: pointer;
+    outline: none;
+    flex: 1;
+}
+
+.table-box {
+    overflow-x: auto;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th {
+    text-align: left;
+    padding: 0.75rem 0.5rem;
+    border-bottom: 1px solid var(--border-color);
+    color: var(--text-light-gray-color);
+    font-size: 0.75rem;
+}
+
+td {
+    padding: 1rem 0.5rem;
+    border-bottom: 1px solid var(--border-color);
+    font-size: 0.875rem;
+}
+
+
+#transaction-table-data .actions .edit-ic,
+.delete-ic {
+    padding-inline: 0.5rem;
+    font-size: 1rem;
+    font-weight: bold;
+}
+
+.edit-ic {
+    color: var(--text-blue-color);
+}
+
+.delete-ic {
+    color: var(--text-red-color);
 }
