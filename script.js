@@ -14,11 +14,20 @@ const loginForm = document.querySelector("#login-form");
 const loggedInUserName = document.querySelector(".navbar .user-info .user-name");
 const logoutBtn = document.querySelector("#logout-btn");
 
+const addTransactionModal = document.querySelector("#modal-add-transaction");
+const closeAddTransactionModalBtn = document.querySelector("#modal-add-transaction .close-modal");
+
+const addTransactionBtn = document.querySelector("#add-transaction-btn");
+
 let users = [];
 
 function showCard(show, hide) {
-    hide.classList.add("hidden");
-    show.classList.remove("hidden");
+    if (hide != null) {
+        hide.classList.add("hidden");
+    }
+    if (show != null) {
+        show.classList.remove("hidden");
+    }
 }
 showLoginCardLink.addEventListener("click", () => { showCard(loginCard, registerCard) });
 showRegisterCardLink.addEventListener("click", () => { showCard(registerCard, loginCard) });
@@ -156,6 +165,13 @@ loginForm.addEventListener("submit", (e) => { loginUser(e) });
 logoutBtn.addEventListener("click", () => {
     localStorage.removeItem("currentUser");
     showCard(authScreen, internalScreen);
+});
+
+addTransactionBtn.addEventListener("click", () => {
+    showCard(addTransactionModal, null);
+});
+closeAddTransactionModalBtn.addEventListener("click", () => {
+    showCard(null, addTransactionModal);
 });
 
 function hasLoggedInUser() {

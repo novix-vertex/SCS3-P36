@@ -169,6 +169,52 @@
                 </section>
             </main>
         </div>
+        <div id="modal-add-transaction" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 id="modal-title">Add Transaction</h3>
+                    <i class="close-modal ri-close-large-fill"></i>
+                </div>
+                <form id="form-add-transaction">
+                    <input type="hidden" id="transaction-id" value="">
+                    <div class="form-group">
+                        <label class="required">Type</label>
+                        <select id="transaction-type" required="">
+                            <option value="expense">Expense</option>
+                            <option value="income">Income</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Description</label>
+                        <input type="text" id="transaction-description" placeholder="Add transaction description..."
+                            required="">
+                    </div>
+                    <div class="form-group">
+                        <label class="required">Amount</label>
+                        <input type="number" id="transaction-amount" step="0.01" min="0" max="10000000000" required="">
+                    </div>
+                    <div class="form-group">
+                        <label class="required">Date</label>
+                        <input type="date" id="transaction-date" required="">
+                    </div>
+                    <div class="form-group">
+                        <label class="required">Category</label>
+                        <select id="transaction-category" required="">
+                            <option value="" disabled="" selected="">Select a category</option>
+                            <option value="Food &amp; Dining">Food &amp; Dining</option>
+                            <option value="Shopping">Shopping</option>
+                            <option value="Recharge &amp; Bills">Recharge &amp; Bills</option>
+                            <option value="Petrol &amp; Auto">Petrol &amp; Auto</option>
+                            <option value="Utilities">Utilities</option>
+                            <option value="Salary">Salary</option>
+                            <option value="Entertainment">Entertainment</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="save-transaction-btn">Save Transaction</button>
+                </form>
+            </div>
+        </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
