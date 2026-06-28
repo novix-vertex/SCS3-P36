@@ -299,12 +299,12 @@ main {
 
 .bg-green {
     background: var(--light-green-color);
-    color: var(--text-color-green);
+    color: var(--text-green-color);
 }
 
 .bg-red {
     background: var(--light-red-color);
-    color: var(--text-color-red);
+    color: var(--text-red-color);
 }
 
 .view-section {
