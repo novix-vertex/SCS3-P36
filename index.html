@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FinTrackPro</title>
+    <title>FinTrack Pro</title>
     <link href="https://cdn.jsdelivr.net/npm/remixicon@4.9.0/fonts/remixicon.css" rel="stylesheet" />
     <link rel="stylesheet" href="style.css">
 </head>
@@ -14,7 +14,20 @@
     <div class="container">
         <aside class="sidebar"></aside>
         <main class="main">
-            <header class="navbar"></header>
+            <header class="navbar">
+                <div class="navbar-actions">
+                    <div class="nav-right">
+
+                        <div class="user-info">
+                            <span class="user-name">shiny</span>
+                        </div>
+                        
+                        <button id="logout-btn">
+                            <i class="ri-logout-box-r-line"></i> Logout
+                        </button>
+                    </div> 
+                </div>
+            </header>
             <section class="dashboard"></section>
         </main>
     </div>
