@@ -19,6 +19,7 @@ const addTransactionModal = document.querySelector("#modal-add-transaction");
 const closeAddTransactionModalBtn = document.querySelector("#modal-add-transaction .close-modal");
 
 const addTransactionBtn = document.querySelector("#add-transaction-btn");
+const transactionTableData = document.querySelector("#transaction-table-data");
 
 let users = [];
 let transactions = [];
@@ -171,14 +172,11 @@ function loginUser(e) {
     loginForm.reset();
     showCard(internalScreen, authScreen);
     loggedInUserName.textContent = `Welcome ${currentUser.name}!`;
-    console.log(currentUser);
-
 }
 loginForm.addEventListener("submit", (e) => { loginUser(e) });
 
 logoutBtn.addEventListener("click", () => {
     localStorage.removeItem("currentUser");
-    console.log(currentUser);
     showCard(authScreen, internalScreen);
 });
 
@@ -215,7 +213,6 @@ function addTransaction(e) {
         );
         return;
     }
-    console.log(currentUser);
 
     const transaction = {
         id: Date.now(),
@@ -237,10 +234,49 @@ function addTransaction(e) {
     );
     showCard(null, addTransactionModal);
     AddTransactionForm.reset();
+    showTransactions();
 }
 AddTransactionForm.addEventListener("submit", (e) => {
     addTransaction(e);
 });
+
+function showTransactions() {
+    transactions = getTransactions();
+    transactionTableData.innerHTML = "";
+    if (transactions.length === 0) {
+        transactionTableData.innerHTML = `<tr><td colspan="5">No Transactions Found</td></tr>`;
+        return;
+    }
+    transactions.forEach(function (transaction) {
+        let tr = document.createElement("tr");
+        tr.innerHTML += `<td>${transaction.date}</td>
+                         <td>${transaction.description}</td>
+                         <td>${transaction.category}</td>
+                         <td class="amount">${transaction.amount}</td>
+                         <td class="actions">
+                            <i class="edit-ic ri-pencil-fill" data-id="${transaction.id}"></i>
+                            <i class="delete-ic ri-delete-bin-6-line" data-id="${transaction.id}"></i>
+                         </td>`;
+        transactionTableData.append(tr);
+    });
+}
+showTransactions();
+
+transactionTableData.addEventListener("click", function (e) {
+    if (e.target.classList.contains("delete-ic")) {
+        deleteTransaction(Number(e.target.dataset.id));
+    }
+});
+
+function deleteTransaction(id) {
+    id = Number(id);
+    transactions =
+        transactions.filter(function (item) {
+            return item.id !== id;
+        });
+    saveTransactions();
+    showTransactions();
+}
 
 function hasLoggedInUser() {
     if (currentUser) {

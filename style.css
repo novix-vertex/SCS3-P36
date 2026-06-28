@@ -141,7 +141,8 @@ label.required::after {
 
 .container .auth.hidden,
 .container .internal.hidden,
-.container .auth .auth-card.hidden,.modal.hidden {
+.container .auth .auth-card.hidden,
+.modal.hidden {
     display: none;
 }
 
@@ -449,6 +450,7 @@ main {
 table {
     width: 100%;
     border-collapse: collapse;
+    table-layout: fixed;
 }
 
 th {
@@ -467,10 +469,11 @@ td {
 
 
 #transaction-table-data .actions .edit-ic,
-.delete-ic {
+#transaction-table-data .actions .delete-ic {
     padding-inline: 0.5rem;
     font-size: 1rem;
     font-weight: bold;
+    cursor: pointer;
 }
 
 .edit-ic {
