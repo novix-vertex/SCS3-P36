@@ -21,6 +21,12 @@ const closeAddTransactionModalBtn = document.querySelector("#modal-add-transacti
 const addTransactionBtn = document.querySelector("#add-transaction-btn");
 const transactionTableData = document.querySelector("#transaction-table-data");
 
+const transactionTypeInp = document.querySelector("#form-add-transaction #transaction-type");
+const transactionDescriptionInp = document.querySelector("#form-add-transaction #transaction-description");
+const transactionAmountInp = document.querySelector("#form-add-transaction #transaction-amount");
+const transactionDateInp = document.querySelector("#form-add-transaction #transaction-date");
+const transactionCategoryInp = document.querySelector("#form-add-transaction #transaction-category");
+
 let users = [];
 let transactions = [];
 let currentUser = JSON.parse(localStorage.getItem("currentUser")) || {};
@@ -30,6 +36,7 @@ const statIncome = document.querySelector("#stat-income");
 const statExpense = document.querySelector("#stat-expense");
 const statCount = document.querySelector("#stat-count");
 
+let editingTransactionId = null;
 
 function showCard(show, hide) {
     if (hide != null) {
@@ -37,6 +44,17 @@ function showCard(show, hide) {
     }
     if (show != null) {
         show.classList.remove("hidden");
+    }
+
+    if (editingTransactionId != null) {
+        const transaction = transactions.find((transaction) => {
+            return transaction.id == editingTransactionId;
+        })
+        transactionTypeInp.value = transaction.type;
+        transactionDescriptionInp.value = transaction.description;
+        transactionAmountInp.value = transaction.amount;
+        transactionDateInp.value = transaction.date;
+        transactionCategoryInp.value = transaction.category;
     }
 }
 showLoginCardLink.addEventListener("click", () => { showCard(loginCard, registerCard) });
@@ -200,14 +218,14 @@ window.addEventListener("click", function (e) {
 
 
 function addTransaction(e) {
+
+    const type = transactionTypeInp.value;
+    const description = transactionDescriptionInp.value.trim() || "";
+    const amount = Number(transactionAmountInp.value);
+    const date = transactionDateInp.value;
+    const category = transactionCategoryInp.value;
+
     e.preventDefault();
-
-    const type = document.querySelector("#form-add-transaction #transaction-type").value;
-    const description = document.querySelector("#form-add-transaction #transaction-description").value.trim() || "";
-    const amount = Number(document.querySelector("#form-add-transaction #transaction-amount").value);
-    const date = document.querySelector("#form-add-transaction #transaction-date").value;
-    const category = document.querySelector("#form-add-transaction #transaction-category").value;
-
     if (type === "" || amount <= 0 || date === "" || category === "") {
         Swal.fire(
             {
@@ -228,15 +246,37 @@ function addTransaction(e) {
         date,
         category
     };
-    transactions.push(transaction);
-    saveTransactions();
-    Swal.fire(
-        {
-            icon: "success",
-            title: "Success",
-            text: "New Transaction has been added successfully."
+
+    if (editingTransactionId != null) {
+        const index = transactions.findIndex((transaction) => {
+            return transaction.id == editingTransactionId;
+        });
+
+        if (index != -1) {
+            transactions[index] = transaction;
         }
-    );
+        editingTransactionId = null;
+        saveTransactions();
+        Swal.fire(
+            {
+                icon: "success",
+                title: "Success",
+                text: "Transaction has been updated successfully."
+            }
+        );
+
+    } else {
+        transactions.push(transaction);
+        saveTransactions();
+        Swal.fire(
+            {
+                icon: "success",
+                title: "Success",
+                text: "New Transaction has been added successfully."
+            }
+        );
+
+    }
     showCard(null, addTransactionModal);
     AddTransactionForm.reset();
     refreshUI();
@@ -282,6 +322,9 @@ transactionTableData.addEventListener("click", function (e) {
             }
         });
     }
+    if (e.target.classList.contains("edit-ic")) {
+        editTransaction(Number(e.target.dataset.id));
+    }
 });
 
 function deleteTransaction(id) {
@@ -294,11 +337,16 @@ function deleteTransaction(id) {
     refreshUI();
 }
 
-function formatCurrency(amount){
-    return new Intl.NumberFormat("en-IN",{
-        style:"currency",
-        currency:"INR",
-        minimumFractionDigits:0
+function editTransaction(id) {
+    id = Number(id);
+    editingTransactionId = id;
+    showCard(addTransactionModal, null);
+}
+function formatCurrency(amount) {
+    return new Intl.NumberFormat("en-IN", {
+        style: "currency",
+        currency: "INR",
+        minimumFractionDigits: 0
     }).format(amount);
 
 }
