@@ -47,7 +47,38 @@
                     </div>
                 </div>
             </header>
-            <section class="dashboard"></section>
+            <section id="view-dashboard" class="dashboard view-section active">
+
+                <div class="view-header">
+                    <h1>Financial Overview</h1>
+                    <p>Real-time tracking application</p>
+                </div>
+
+                <div class="view-stat-cards">
+                    <div class="card">
+                        <div class="card-icon bg-blue"><i class="ri-bank-fill"></i></div>
+                        <p>Current Balance</p>
+                        <h3 id="stat-balance">$0.00</h3>
+                    </div>
+                    <div class="card">
+                        <div class="card-icon bg-green"><i class="ri-arrow-right-up-line"></i></div>
+                        <p>Total Income</p>
+                        <h3 id="stat-income" class="text-green">$0.00</h3>
+                    </div>
+                    <div class="card">
+                        <div class="card-icon bg-red"><i class="ri-arrow-right-down-line"></i></div>
+                        <p>Total Expense</p>
+                        <h3 id="stat-expense" class="text-red">$0.00</h3>
+                    </div>
+                    <div class="card">
+                        <div class="card-icon bg-blue"><i class="ri-wallet-3-line"></i></div>
+                        <p>Total Transactions</p>
+                        <h3 id="stat-count">0</h3>
+                    </div>
+                </div>
+
+                
+            </section>
         </main>
     </div>
 

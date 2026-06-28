@@ -6,16 +6,25 @@
 :root {
     --background-color: #f8f9fb;
     --text-color: #1a1d21;
+    --text-light-gray-color: #6b7280;
 
     --sidebar-background-color: #ffffff;
+    --card-background-color: #ffffff;
+
     --border-color: #e5e7eb;
     --border-gray-color: #ccc;
-    --text-light-gray-color: #6b7280;
+
 
     --black-color: #000000;
 
     --light-blue-color: #dbeafe;
     --text-color-blue: #1e40af;
+
+    --light-green-color: #dcfce7;
+    --text-green-color: #166534;
+
+    --light-red-color: #fee2e2;
+    --text-red-color: #991b1b;
 }
 
 * {
@@ -177,4 +186,78 @@ main {
     font-size: 0.875rem;
     font-weight: 600;
     color: var(--text-color);
+}
+
+.bg-blue {
+    background: var(--light-blue-color);
+    color: var(--text-color-blue);
+}
+
+.bg-green {
+    background: var(--light-green-color);
+    color: var(--text-color-green);
+}
+
+.bg-red {
+    background: var(--light-red-color);
+    color: var(--text-color-red);
+}
+
+.view-section {
+    padding: 2rem;
+}
+
+.view-section .view-header {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    padding-bottom: 2rem;
+}
+
+.view-section .view-header h1 {
+    font-size: 1.75rem;
+}
+
+.view-section .view-header p {
+    color: var(--text-light-gray-color);
+    font-size: 0.875rem;
+}
+
+.view-section .view-stat-cards {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.25rem;
+}
+
+.view-section .view-stat-cards .card {
+    background-color: var(--card-background-color);
+    border: 1px solid var(--border-color);
+    border-radius: 0.75rem;
+    padding: 1.25rem;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    gap:0.5rem;
+}
+
+.view-section .view-stat-cards .card .card-icon {
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 0.5rem;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.view-section .view-stat-cards .card p {
+    color: var(--text-muted);
+    font-size: 0.875rem;
+    padding-top:0.875rem;
+}
+
+.view-section .view-stat-cards .card h3 {
+    font-size: 1.5rem;
 }
