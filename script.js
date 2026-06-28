@@ -25,6 +25,11 @@ let users = [];
 let transactions = [];
 let currentUser = JSON.parse(localStorage.getItem("currentUser")) || {};
 
+const statBalance = document.querySelector("#stat-balance");
+const statIncome = document.querySelector("#stat-income");
+const statExpense = document.querySelector("#stat-expense");
+const statCount = document.querySelector("#stat-count");
+
 
 function showCard(show, hide) {
     if (hide != null) {
@@ -234,7 +239,7 @@ function addTransaction(e) {
     );
     showCard(null, addTransactionModal);
     AddTransactionForm.reset();
-    showTransactions();
+    refreshUI();
 }
 AddTransactionForm.addEventListener("submit", (e) => {
     addTransaction(e);
@@ -252,7 +257,7 @@ function showTransactions() {
         tr.innerHTML += `<td>${transaction.date}</td>
                          <td>${transaction.description}</td>
                          <td>${transaction.category}</td>
-                         <td class="amount">${transaction.amount}</td>
+                         <td class="amount">${formatCurrency(transaction.amount)}</td>
                          <td class="actions">
                             <i class="edit-ic ri-pencil-fill" data-id="${transaction.id}"></i>
                             <i class="delete-ic ri-delete-bin-6-line" data-id="${transaction.id}"></i>
@@ -260,7 +265,6 @@ function showTransactions() {
         transactionTableData.append(tr);
     });
 }
-showTransactions();
 
 transactionTableData.addEventListener("click", function (e) {
     if (e.target.classList.contains("delete-ic")) {
@@ -287,8 +291,45 @@ function deleteTransaction(id) {
             return item.id !== id;
         });
     saveTransactions();
-    showTransactions();
+    refreshUI();
 }
+
+function formatCurrency(amount){
+    return new Intl.NumberFormat("en-IN",{
+        style:"currency",
+        currency:"INR",
+        minimumFractionDigits:0
+    }).format(amount);
+
+}
+function updateSummaryCards() {
+    const income = transactions.reduce((sum, transaction) => {
+        if (transaction.type === "income") {
+            return sum += transaction.amount;
+        }
+        return sum;
+    }, 0);
+
+    const expense = transactions.reduce((sum, transaction) => {
+        if (transaction.type === "expense") {
+            return sum += transaction.amount;
+        }
+        return sum;
+    }, 0);
+
+    statIncome.textContent = formatCurrency(income);
+    statExpense.textContent = formatCurrency(expense);
+    statBalance.textContent = formatCurrency(income - expense);
+    statCount.textContent = transactions.length;
+
+}
+
+function refreshUI() {
+    updateSummaryCards();
+    showTransactions();
+
+}
+refreshUI();
 
 function hasLoggedInUser() {
     if (currentUser) {
