@@ -379,20 +379,30 @@ main {
 .card h3 {
     font-size: 1.5rem;
 }
-#stat-balance,#stat-count{
-    color:var(--text-blue-color);
+
+#stat-balance,
+#stat-count {
+    color: var(--text-blue-color);
 }
-#stat-expense{
+
+#stat-expense {
     color: var(--text-red-color);
 }
-#stat-income{
-    color:var(--text-green-color);
+
+#stat-income {
+    color: var(--text-green-color);
 }
 
 .dashboard-content {
     display: grid;
     grid-template-columns: 2fr 1fr;
     gap: 1.25rem;
+}
+
+.dashboard-content .left {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
 }
 
 

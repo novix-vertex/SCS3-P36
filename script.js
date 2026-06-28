@@ -37,6 +37,11 @@ const statExpense = document.querySelector("#stat-expense");
 const statCount = document.querySelector("#stat-count");
 
 let editingTransactionId = null;
+let cashFlowChart = null;
+
+let income = 0;
+let expense = 0;
+
 
 function showCard(show, hide) {
     if (hide != null) {
@@ -78,6 +83,7 @@ function saveTransactions() {
 
 users = getUsers();
 transactions = getTransactions();
+
 
 function registerUser(e) {
     e.preventDefault();
@@ -351,14 +357,14 @@ function formatCurrency(amount) {
 
 }
 function updateSummaryCards() {
-    const income = transactions.reduce((sum, transaction) => {
+    income = transactions.reduce((sum, transaction) => {
         if (transaction.type === "income") {
             return sum += transaction.amount;
         }
         return sum;
     }, 0);
 
-    const expense = transactions.reduce((sum, transaction) => {
+    expense = transactions.reduce((sum, transaction) => {
         if (transaction.type === "expense") {
             return sum += transaction.amount;
         }
@@ -372,12 +378,47 @@ function updateSummaryCards() {
 
 }
 
+function renderChart() {
+    const canvas = document.querySelector("#chart-canvas");
+    if (cashFlowChart) {
+        cashFlowChart.destroy();
+    }
+    cashFlowChart = new Chart(canvas, {
+        type: "bar",
+        data: {
+            labels: ["Income", "Expense"],
+            datasets: [{
+                label: "Amount",
+                data: [income, expense],
+                backgroundColor: ["#28a745", "#fee2e2"],
+                borderRadius: 8
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: true,
+            scales: {
+                y: { grid: { display: false } },
+                x: { grid: { display: false } },
+            }
+        }
+    });
+
+}
+
+
+
+
 function refreshUI() {
     updateSummaryCards();
     showTransactions();
+    renderChart();
 
 }
 refreshUI();
+
+
+
 
 function hasLoggedInUser() {
     if (currentUser) {
