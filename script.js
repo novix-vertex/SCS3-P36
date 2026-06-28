@@ -10,6 +10,8 @@ const showRegisterCardLink = document.querySelector(".register-link");
 const registerForm = document.querySelector("#register-form");
 const loginForm = document.querySelector("#login-form");
 
+
+const loggedInUserName = document.querySelector(".navbar .user-info .user-name");
 const logoutBtn = document.querySelector("#logout-btn");
 
 let users = [];
@@ -146,6 +148,8 @@ function loginUser(e) {
     });
     loginForm.reset();
     showCard(internalScreen, authScreen);
+    loggedInUserName.textContent = `Welcome ${currentUser.name}!`;
+
 }
 loginForm.addEventListener("submit", (e) => { loginUser(e) });
 
@@ -158,6 +162,7 @@ function hasLoggedInUser() {
     const currentUser = JSON.parse(localStorage.getItem("currentUser"));
     if (currentUser) {
         showCard(internalScreen, authScreen);
+        loggedInUserName.textContent = `Welcome ${currentUser.name}!`;
     } else {
         showCard(authScreen, internalScreen);
     }
