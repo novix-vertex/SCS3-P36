@@ -12,8 +12,7 @@ const loginForm = document.querySelector("#login-form");
 
 const logoutBtn = document.querySelector("#logout-btn");
 
-let users = JSON.parse(localStorage.getItem("users")) || [];
-
+let users = [];
 
 function showCard(show, hide) {
     hide.classList.add("hidden");
@@ -22,7 +21,15 @@ function showCard(show, hide) {
 showLoginCardLink.addEventListener("click", () => { showCard(loginCard, registerCard) });
 showRegisterCardLink.addEventListener("click", () => { showCard(registerCard, loginCard) });
 
+function getUsers() {
+    return JSON.parse(localStorage.getItem("users")) || [];
+}
 
+function saveUsers(users) {
+    localStorage.setItem("users", JSON.stringify(users));
+}
+
+users = getUsers();
 
 function registerUser(e) {
     e.preventDefault();
@@ -67,7 +74,7 @@ function registerUser(e) {
         password
     };
     users.push(user);
-    localStorage.setItem("users", JSON.stringify(users));
+    saveUsers();
     Swal.fire(
         {
             icon: "success",
