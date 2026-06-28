@@ -169,14 +169,13 @@
                 </section>
             </main>
         </div>
-        <div id="modal-add-transaction" class="modal">
+        <div id="modal-add-transaction" class="modal hidden">
             <div class="modal-content">
                 <div class="modal-header">
                     <h3 id="modal-title">Add Transaction</h3>
                     <i class="close-modal ri-close-large-fill"></i>
                 </div>
                 <form id="form-add-transaction">
-                    <input type="hidden" id="transaction-id" value="">
                     <div class="form-group">
                         <label class="required">Type</label>
                         <select id="transaction-type" required="">
@@ -186,8 +185,7 @@
                     </div>
                     <div class="form-group">
                         <label>Description</label>
-                        <input type="text" id="transaction-description" placeholder="Add transaction description..."
-                            required="">
+                        <input type="text" id="transaction-description" placeholder="Add transaction description...">
                     </div>
                     <div class="form-group">
                         <label class="required">Amount</label>
@@ -200,7 +198,7 @@
                     <div class="form-group">
                         <label class="required">Category</label>
                         <select id="transaction-category" required="">
-                            <option value="" disabled="" selected="">Select a category</option>
+                            <option value="" disabled="" selected="">Choose a category</option>
                             <option value="Food &amp; Dining">Food &amp; Dining</option>
                             <option value="Shopping">Shopping</option>
                             <option value="Recharge &amp; Bills">Recharge &amp; Bills</option>

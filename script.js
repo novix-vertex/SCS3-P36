@@ -9,6 +9,7 @@ const showRegisterCardLink = document.querySelector(".register-link");
 
 const registerForm = document.querySelector("#register-form");
 const loginForm = document.querySelector("#login-form");
+const AddTransactionForm = document.querySelector("#form-add-transaction");
 
 
 const loggedInUserName = document.querySelector(".navbar .user-info .user-name");
@@ -20,6 +21,9 @@ const closeAddTransactionModalBtn = document.querySelector("#modal-add-transacti
 const addTransactionBtn = document.querySelector("#add-transaction-btn");
 
 let users = [];
+let transactions = [];
+let currentUser = JSON.parse(localStorage.getItem("currentUser")) || {};
+
 
 function showCard(show, hide) {
     if (hide != null) {
@@ -36,11 +40,20 @@ function getUsers() {
     return JSON.parse(localStorage.getItem("users")) || [];
 }
 
-function saveUsers(users) {
+function saveUsers() {
     localStorage.setItem("users", JSON.stringify(users));
 }
 
+function getTransactions() {
+    return JSON.parse(localStorage.getItem("transactions")) || [];
+}
+
+function saveTransactions() {
+    localStorage.setItem("transactions", JSON.stringify(transactions));
+}
+
 users = getUsers();
+transactions = getTransactions();
 
 function registerUser(e) {
     e.preventDefault();
@@ -85,7 +98,7 @@ function registerUser(e) {
         password
     };
     users.push(user);
-    saveUsers(users);
+    saveUsers();
     Swal.fire(
         {
             icon: "success",
@@ -94,7 +107,7 @@ function registerUser(e) {
         }
     );
     registerForm.reset();
-    showCard(loginCard, registerCard)
+    showCard(loginCard, registerCard);
 }
 registerForm.addEventListener("submit", (e) => { registerUser(e) });
 
@@ -144,7 +157,7 @@ function loginUser(e) {
 
         return;
     }
-    const currentUser = {
+    currentUser = {
         id: existingUser.id,
         name: existingUser.name,
         email: existingUser.email
@@ -158,12 +171,14 @@ function loginUser(e) {
     loginForm.reset();
     showCard(internalScreen, authScreen);
     loggedInUserName.textContent = `Welcome ${currentUser.name}!`;
+    console.log(currentUser);
 
 }
 loginForm.addEventListener("submit", (e) => { loginUser(e) });
 
 logoutBtn.addEventListener("click", () => {
     localStorage.removeItem("currentUser");
+    console.log(currentUser);
     showCard(authScreen, internalScreen);
 });
 
@@ -180,8 +195,54 @@ window.addEventListener("click", function (e) {
     }
 });
 
+
+function addTransaction(e) {
+    e.preventDefault();
+
+    const type = document.querySelector("#form-add-transaction #transaction-type").value;
+    const description = document.querySelector("#form-add-transaction #transaction-description").value.trim() || "";
+    const amount = Number(document.querySelector("#form-add-transaction #transaction-amount").value);
+    const date = document.querySelector("#form-add-transaction #transaction-date").value;
+    const category = document.querySelector("#form-add-transaction #transaction-category").value;
+
+    if (type === "" || amount <= 0 || date === "" || category === "") {
+        Swal.fire(
+            {
+                icon: "error",
+                title: "Error",
+                text: "Please fill all the required fields"
+            }
+        );
+        return;
+    }
+    console.log(currentUser);
+
+    const transaction = {
+        id: Date.now(),
+        uid: currentUser.id,
+        type,
+        description,
+        amount,
+        date,
+        category
+    };
+    transactions.push(transaction);
+    saveTransactions();
+    Swal.fire(
+        {
+            icon: "success",
+            title: "Success",
+            text: "New Transaction has been added successfully."
+        }
+    );
+    showCard(null, addTransactionModal);
+    AddTransactionForm.reset();
+}
+AddTransactionForm.addEventListener("submit", (e) => {
+    addTransaction(e);
+});
+
 function hasLoggedInUser() {
-    const currentUser = JSON.parse(localStorage.getItem("currentUser"));
     if (currentUser) {
         showCard(internalScreen, authScreen);
         loggedInUserName.textContent = `Welcome ${currentUser.name}!`;
