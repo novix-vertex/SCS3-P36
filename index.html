@@ -79,7 +79,7 @@
                         <div class="nav-right">
 
                             <div class="user-info">
-                                <span class="user-name"></span>
+                                <span class="user-name">Anonymous User</span>
                             </div>
 
                             <button id="logout-btn">
@@ -99,17 +99,17 @@
                         <div class="card">
                             <div class="card-icon bg-blue"><i class="ri-bank-fill"></i></div>
                             <p>Current Balance</p>
-                            <h3 id="stat-balance">$0.00</h3>
+                            <h3 id="stat-balance">0.00</h3>
                         </div>
                         <div class="card">
                             <div class="card-icon bg-green"><i class="ri-arrow-right-up-long-line"></i></div>
                             <p>Total Income</p>
-                            <h3 id="stat-income" class="text-green">$0.00</h3>
+                            <h3 id="stat-income" class="text-green">0.00</h3>
                         </div>
                         <div class="card">
                             <div class="card-icon bg-red"><i class="ri-arrow-right-down-long-line"></i></div>
                             <p>Total Expense</p>
-                            <h3 id="stat-expense" class="text-red">$0.00</h3>
+                            <h3 id="stat-expense" class="text-red">0.00</h3>
                         </div>
                         <div class="card">
                             <div class="card-icon bg-blue"><i class="ri-wallet-3-line"></i></div>
@@ -196,12 +196,12 @@
                                     </div>
                                     <div class="form-group">
                                         <label class="required">Primary Currency</label>
-                                        <select id="setting-currency" required="">
-                                            <option value="$">USD ($)</option>
-                                            <option value="€">EUR (€)</option>
-                                            <option value="£">GBP (£)</option>
-                                            <option value="₹">INR (₹)</option>
-                                            <option value="¥">JPY (¥)</option>
+                                        <select id="settings-currency" required="">
+                                            <option value="USD">USD</option>
+                                            <option value="EUR">EUR</option>
+                                            <option value="GBP">GBP</option>
+                                            <option value="INR">INR</option>
+                                            <option value="JPY">JPY</option>
                                         </select>
                                     </div>
                                     <button type="submit">Save Changes</button>

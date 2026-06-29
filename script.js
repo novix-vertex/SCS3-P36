@@ -13,7 +13,7 @@ const showRegisterCardLink = document.querySelector(".register-link");
 const registerForm = document.querySelector("#register-form");
 const loginForm = document.querySelector("#login-form");
 const AddTransactionForm = document.querySelector("#form-add-transaction");
-
+const settingsForm = document.querySelector("#settings-form");
 
 const loggedInUserName = document.querySelector(".navbar .user-info .user-name");
 const logoutBtn = document.querySelector("#logout-btn");
@@ -46,6 +46,9 @@ const statCount = document.querySelector("#stat-count");
 
 const searchInput = document.querySelector("#search-input");
 
+const settingsName = document.querySelector("#settings-name");
+const settingsCurrency = document.querySelector("#settings-currency");
+
 let editingTransactionId = null;
 let cashFlowChart = null;
 
@@ -55,6 +58,14 @@ let expense = 0;
 let searchText = "";
 let typeFilterValue = "all";
 let categoryFilterValue = "all";
+
+const currencyLocales = {
+    INR: "en-IN",
+    USD: "en-US",
+    EUR: "de-DE",
+    GBP: "en-GB",
+    JPY: "ja-JP"
+};
 
 function showCard(show, hide) {
     if (hide != null) {
@@ -142,7 +153,11 @@ function registerUser(e) {
         id: Date.now(),
         name,
         email,
-        password
+        password,
+        settings: {
+            currency: "INR",
+            theme: "light"
+        }
     };
     users.push(user);
     saveUsers();
@@ -207,7 +222,8 @@ function loginUser(e) {
     currentUser = {
         id: existingUser.id,
         name: existingUser.name,
-        email: existingUser.email
+        email: existingUser.email,
+        settings: existingUser.settings
     };
     localStorage.setItem("currentUser", JSON.stringify(currentUser));
     Swal.fire({
@@ -238,6 +254,67 @@ window.addEventListener("click", function (e) {
         showCard(null, addTransactionModal);
     }
 });
+
+function updateSettings(e) {
+    e.preventDefault();
+
+    const name = settingsName.value.trim();
+    const currency = settingsCurrency.value.trim();
+
+    if (name === "" || currency === "") {
+        Swal.fire(
+            {
+                icon: "error",
+                title: "Error",
+                text: "All fields are mandatory."
+            }
+        );
+
+        return;
+    }
+    const existingUser = users.find(function (user) {
+        return user.email === currentUser.email;
+    });
+    if (!existingUser) {
+        Swal.fire(
+            {
+                icon: "error",
+                title: "Error",
+                text: "User not found."
+            }
+        );
+
+        return;
+    }
+    existingUser.name = name;
+    existingUser.settings.currency = currency;
+
+
+    currentUser.name = name;
+    currentUser.settings.currency = currency;
+    localStorage.setItem("currentUser", JSON.stringify(currentUser));
+
+    const index = users.findIndex((user) => {
+        return user.id == currentUser.id;
+    });
+
+    if (index != -1) {
+        users[index].name = currentUser.name;
+        users[index].settings = currentUser.settings;
+    }
+
+    saveUsers();
+    Swal.fire(
+        {
+            icon: "success",
+            text: "User settings has been updated successfully.",
+            title: "Success"
+        }
+    );
+    loggedInUserName.textContent = `Welcome ${currentUser.name}!`;
+    refreshUI();
+}
+settingsForm.addEventListener("submit", (e) => { updateSettings(e) });
 
 
 function addTransaction(e) {
@@ -381,13 +458,20 @@ function editTransaction(id) {
     editingTransactionId = id;
     showCard(addTransactionModal, null);
 }
+
+function getUserCurrency() {
+    return currentUser?.settings?.currency || "INR";
+}
 function formatCurrency(amount) {
-    return new Intl.NumberFormat("en-IN", {
+
+    const currency = getUserCurrency();
+    const locale = currencyLocales[currency] || "en-IN";
+
+    return new Intl.NumberFormat(locale, {
         style: "currency",
-        currency: "INR",
+        currency: currency,
         minimumFractionDigits: 0
     }).format(amount);
-
 }
 function updateSummaryCards() {
     income = transactions.reduce((sum, transaction) => {
@@ -470,9 +554,13 @@ navMenu.addEventListener("click", function (e) {
     }
 });
 
-
+function settings() {
+    settingsName.value = currentUser.name;
+    settingsCurrency.value = currentUser.settings.currency;
+}
 
 function refreshUI() {
+    settings();
     showTransactions();
     updateSummaryCards();
     renderChart();
