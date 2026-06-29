@@ -256,6 +256,7 @@ logoutBtn.addEventListener("click", () => {
     currentUser = {};
     transactions = [];
     showCard(authScreen, internalScreen);
+    applyTheme("light");
 });
 
 addTransactionBtn.addEventListener("click", () => {
@@ -672,6 +673,10 @@ function performReset() {
     );
 
     settingsCurrency.value = "INR";
+    themeToggle.checked = false;
+    themeText.textContent = "Light Mode";
+
+    applyTheme("light");
 
     refreshUI();
 

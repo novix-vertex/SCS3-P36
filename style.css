@@ -650,6 +650,7 @@ td {
     border: 1px solid var(--border-gray-color);
     border-radius: 0.375rem;
     box-sizing: border-box;
+    text-transform: capitalize;
 }
 
 .container .settings #settings-form button {
