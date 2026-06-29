@@ -747,6 +747,9 @@ function refreshUI() {
     showTransactions();
     updateSummaryCards();
     renderChart();
+
+    motivationalQuotes();
+
 }
 hasLoggedInUser();
 refreshUI();
@@ -826,3 +829,18 @@ setInterval(() => {
     setTime();
 }, 1000);
 
+
+function motivationalQuotes() {
+    let quoteElem = document.querySelector('.quote-container .quote-card .quote');
+    let authorElem = document.querySelector('.quote-container .quote-card .author');
+
+    async function fetchQuote() {
+        const response = await fetch("https://dummyjson.com/quotes/random");
+        const { quote, author } = await response.json();
+        quoteElem.innerHTML = quote;
+        authorElem.innerHTML = "- " + author;
+    }
+    fetchQuote();
+
+
+}

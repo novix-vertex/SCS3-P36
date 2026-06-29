@@ -752,3 +752,64 @@ button:active {
     font-size: 1rem;
     border-radius: 0.675rem;
 }
+
+.quote-card {
+    background-color: var(--background-color);
+    border-radius: 1rem;
+    color: var(--primary);
+    width: 100%;
+    padding: 1rem;
+}
+
+.quote-card-inner {
+    background-color: var(--light-blue-color);
+    border-radius: 0.87rem;
+    color: var(--primary);
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    gap: 1.5rem;
+    padding: 1rem;
+
+}
+
+.quote-card .quote-title,
+.quote-card .author-title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+.quote-card .quote-title img {
+    opacity: 0.8;
+    height: 32px;
+    width: 32px;
+}
+
+
+.quote-card .quote-title .title,
+.quote-card .author-title .author {
+    color: var(--primary);
+    padding: 0.5rem;
+    width: fit-content;
+    border-radius: 0.5rem;
+    width: 100%;
+    font-size: 1rem;
+    font-weight: bolder;
+}
+
+.quote-card .author-title .author {
+    text-align: right;
+}
+
+.quote-card .quote {
+    background-color: var(--background-color);
+    color: var(--primary);
+    text-align: center;
+    border-radius: 1rem;
+    font-size: 1.2rem;
+    padding-block: 1rem;
+}
