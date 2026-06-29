@@ -149,7 +149,8 @@ function registerUser(e) {
             {
                 icon: "error",
                 title: "Error",
-                text: "All fields are mandatory."
+                text: "All fields are mandatory.",
+                theme: (currentUser && currentUser.id) ? currentUser.settings.theme : "light"
             }
         );
 
@@ -163,7 +164,8 @@ function registerUser(e) {
             {
                 icon: "error",
                 title: "Error",
-                text: "Email already exists."
+                text: "Email already exists.",
+                theme: (currentUser && currentUser.id) ? currentUser.settings.theme : "light"
             }
         );
 
@@ -185,7 +187,8 @@ function registerUser(e) {
         {
             icon: "success",
             text: "User has been registered successfully.",
-            title: "Success"
+            title: "Success",
+            theme: (currentUser && currentUser.id) ? currentUser.settings.theme : "light"
         }
     );
     registerForm.reset();
@@ -207,7 +210,8 @@ function loginUser(e) {
             {
                 icon: "error",
                 title: "Error",
-                text: "All fields are mandatory."
+                text: "All fields are mandatory.",
+                theme: (currentUser && currentUser.id) ? currentUser.settings.theme : "light"
             }
         );
 
@@ -223,7 +227,8 @@ function loginUser(e) {
             {
                 icon: "error",
                 title: "Error",
-                text: "User not found."
+                text: "User not found.",
+                theme: (currentUser && currentUser.id) ? currentUser.settings.theme : "light"
             }
         );
 
@@ -234,7 +239,8 @@ function loginUser(e) {
         Swal.fire({
             icon: "error",
             title: "Error",
-            text: "Invalid Credentials"
+            text: "Invalid Credentials",
+            theme: (currentUser && currentUser.id) ? currentUser.settings.theme : "light"
         });
 
         return;
@@ -250,7 +256,8 @@ function loginUser(e) {
     Swal.fire({
         icon: "success",
         title: `Welcome ${currentUser.name}!`,
-        text: "Login Successful"
+        text: "Login Successful",
+        theme: (currentUser && currentUser.id) ? currentUser.settings.theme : "light"
     });
     loginForm.reset();
     showCard(internalScreen, authScreen);
@@ -268,7 +275,8 @@ logoutBtn.addEventListener("click", () => {
         icon: "warning",
         showCancelButton: true,
         confirmButtonText: "Logout",
-        confirmButtonColor: textRedColor
+        confirmButtonColor: textRedColor,
+        theme: (currentUser && currentUser.id) ? currentUser.settings.theme : "light"
     }).then((result) => {
         if (result.isConfirmed) {
             localStorage.removeItem("currentUser");
@@ -305,7 +313,8 @@ function updateSettings(e) {
             {
                 icon: "error",
                 title: "Error",
-                text: "All fields are mandatory."
+                text: "All fields are mandatory.",
+                theme: (currentUser && currentUser.id) ? currentUser.settings.theme : "light"
             }
         );
 
@@ -319,7 +328,8 @@ function updateSettings(e) {
             {
                 icon: "error",
                 title: "Error",
-                text: "User not found."
+                text: "User not found.",
+                theme: (currentUser && currentUser.id) ? currentUser.settings.theme : "light"
             }
         );
 
@@ -347,7 +357,8 @@ function updateSettings(e) {
         {
             icon: "success",
             text: "User settings has been updated successfully.",
-            title: "Success"
+            title: "Success",
+            theme: (currentUser && currentUser.id) ? currentUser.settings.theme : "light"
         }
     );
     loggedInUserName.textContent = `Welcome ${currentUser.name}!`;
@@ -360,7 +371,8 @@ settingsForm.addEventListener("submit", (e) => {
         icon: "warning",
         showCancelButton: true,
         confirmButtonText: "Save Changes",
-        confirmButtonColor: blackColor
+        confirmButtonColor: blackColor,
+        theme: (currentUser && currentUser.id) ? currentUser.settings.theme : "light"
     }).then((result) => {
         if (result.isConfirmed) {
             updateSettings(e)
@@ -384,7 +396,8 @@ function addTransaction(e) {
             {
                 icon: "error",
                 title: "Error",
-                text: "Please fill all the required fields"
+                text: "Please fill all the required fields",
+                theme: (currentUser && currentUser.id) ? currentUser.settings.theme : "light"
             }
         );
         return;
@@ -416,7 +429,8 @@ function addTransaction(e) {
             {
                 icon: "success",
                 title: "Success",
-                text: "Transaction has been updated successfully."
+                text: "Transaction has been updated successfully.",
+                theme: (currentUser && currentUser.id) ? currentUser.settings.theme : "light"
             }
         );
 
@@ -427,7 +441,8 @@ function addTransaction(e) {
             {
                 icon: "success",
                 title: "Success",
-                text: "New Transaction has been added successfully."
+                text: "New Transaction has been added successfully.",
+                theme: (currentUser && currentUser.id) ? currentUser.settings.theme : "light"
             }
         );
 
@@ -495,7 +510,8 @@ transactionTableData.addEventListener("click", function (e) {
             icon: "warning",
             showCancelButton: true,
             confirmButtonText: "Delete",
-            cancelButtonText: "Cancel"
+            cancelButtonText: "Cancel",
+            theme: (currentUser && currentUser.id) ? currentUser.settings.theme : "light"
         }).then((result) => {
             if (result.isConfirmed) {
                 deleteTransaction(Number(e.target.dataset.id));
@@ -678,7 +694,8 @@ resetData.addEventListener("click", () => {
         icon: "warning",
         showCancelButton: true,
         confirmButtonText: "Reset",
-        confirmButtonColor: textRedColor
+        confirmButtonColor: textRedColor,
+        theme: (currentUser && currentUser.id) ? currentUser.settings.theme : "light"
     }).then((result) => {
         if (result.isConfirmed) {
             performReset();
@@ -719,7 +736,8 @@ function performReset() {
     Swal.fire({
         icon: "success",
         title: "Reset Successful",
-        text: "Your transactions and settings have been reset."
+        text: "Your transactions and settings have been reset.",
+        theme: (currentUser && currentUser.id) ? currentUser.settings.theme : "light"
     });
 
 }
@@ -740,7 +758,8 @@ function exportCSV() {
         Swal.fire({
             icon: "info",
             title: "No Data",
-            text: "No transactions available to export."
+            text: "No transactions available to export.",
+            theme: (currentUser && currentUser.id) ? currentUser.settings.theme : "light"
         });
         return;
     }
