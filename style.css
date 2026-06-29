@@ -142,14 +142,15 @@ label.required::after {
 .container .auth.hidden,
 .container .internal.hidden,
 .container .auth .auth-card.hidden,
-.modal.hidden {
+.modal.hidden,
+.view-section.hidden {
     display: none;
 }
 
 .container .internal {
     display: flex;
-    height: 100vh;
-    overflow: hidden;
+    min-height: 100vh;
+    width: 100%;
 }
 
 .sidebar {
@@ -225,7 +226,7 @@ label.required::after {
     gap: 0.5rem;
 
     background-color: var(--black-color);
-    color: #fff;
+    color: var(--white-color);
     border: none;
 
     padding: 0.875rem;
@@ -241,6 +242,8 @@ main {
     flex-direction: column;
     flex: 1;
 
+    min-width: 0;
+    min-height: 100vh;
     overflow-y: auto;
 }
 
@@ -314,10 +317,7 @@ main {
     display: flex;
     flex-direction: column;
     gap: 1.5rem;
-}
-
-.view-section.active {
-    display: flex;
+    min-height: calc(100vh - 70px);
 }
 
 .view-section .view-header {
@@ -343,7 +343,7 @@ main {
 }
 
 .view-section .view-stat-cards .card,
-.dashboard-content .card {
+.content .card {
     background-color: var(--card-background-color);
     border: 1px solid var(--border-color);
     border-radius: 0.75rem;
@@ -393,23 +393,31 @@ main {
     color: var(--text-green-color);
 }
 
-.dashboard-content {
+.content {
     display: grid;
     grid-template-columns: 2fr 1fr;
     gap: 1.25rem;
 }
 
-.dashboard-content .left {
+.content .left {
     display: flex;
     flex-direction: column;
     gap: 1rem;
 }
 
 
-.dashboard-content .card .card-header {
+.content .card .card-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
+}
+
+.settings-form {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    gap: 1rem;
 }
 
 .transaction-table {
@@ -587,4 +595,52 @@ td {
 .modal .close-modal {
     cursor: pointer;
     font-weight: bold;
+}
+
+.container .settings form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.container .settings #settings-form .form-group {
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    gap: 0.375rem;
+}
+
+.container .settings #settings-form .form-group label {
+    padding-bottom: 0.375rem;
+}
+
+.container .settings #settings-form .form-group input {
+    width: 100%;
+    padding: 0.625rem;
+    border: 1px solid var(--border-gray-color);
+    border-radius: 0.375rem;
+    box-sizing: border-box;
+}
+
+.container .settings #settings-form button {
+    width: 100%;
+    padding: 0.625rem;
+    color: var(--white-color);
+    background-color: var(--black-color);
+    border: none;
+    border-radius: 0.375rem;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.container .settings #settings-form select {
+    padding: 0.5rem;
+    border: 1px solid var(--border-color);
+    border-radius: 0.5rem;
+    background: var(--background-color);
+    color: var(--text-color);
+    cursor: pointer;
+    outline: none;
+    flex: 1;
+
 }

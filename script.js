@@ -1,6 +1,9 @@
 const authScreen = document.querySelector(".container .auth");
 const internalScreen = document.querySelector(".container .internal");
 
+const dashboardView = document.querySelector(".container .internal #view-dashboard");
+const settingsView = document.querySelector(".container .internal #view-settings");
+
 const loginCard = document.querySelector(".login-card");
 const registerCard = document.querySelector(".register-card");
 
@@ -30,6 +33,7 @@ const transactionCategoryInp = document.querySelector("#form-add-transaction #tr
 const typeFilter = document.querySelector("#type-filter");
 const categoryFilter = document.querySelector("#category-filter");
 
+const navMenu = document.querySelector(".nav-menu");
 
 let users = [];
 let transactions = [];
@@ -450,6 +454,23 @@ categoryFilter.addEventListener("change", function () {
     categoryFilterValue = this.value;
     refreshUI();
 });
+
+
+navMenu.addEventListener("click", function (e) {
+    e.preventDefault();
+
+    const navItem = e.target.closest(".nav-item");
+    if (!navItem) {
+        return;
+    }
+    if (navItem.id === "nav-dashboard") {
+        showCard(dashboardView, settingsView);
+    } else if (navItem.id === "nav-settings") {
+        showCard(settingsView, dashboardView);
+    }
+});
+
+
 
 function refreshUI() {
     showTransactions();
