@@ -36,11 +36,15 @@ const statIncome = document.querySelector("#stat-income");
 const statExpense = document.querySelector("#stat-expense");
 const statCount = document.querySelector("#stat-count");
 
+const searchInput = document.querySelector("#search-input");
+
 let editingTransactionId = null;
 let cashFlowChart = null;
 
 let income = 0;
 let expense = 0;
+
+let searchText = "";
 
 
 function showCard(show, hide) {
@@ -50,7 +54,6 @@ function showCard(show, hide) {
     if (show != null) {
         show.classList.remove("hidden");
     }
-
     if (editingTransactionId != null) {
         const transaction = transactions.find((transaction) => {
             return transaction.id == editingTransactionId;
@@ -61,6 +64,11 @@ function showCard(show, hide) {
         transactionDateInp.value = transaction.date;
         transactionCategoryInp.value = transaction.category;
     }
+    if (hide == addTransactionModal) {
+        editingTransactionId = null;
+        AddTransactionForm.reset();
+    }
+
 }
 showLoginCardLink.addEventListener("click", () => { showCard(loginCard, registerCard) });
 showRegisterCardLink.addEventListener("click", () => { showCard(registerCard, loginCard) });
@@ -293,6 +301,12 @@ AddTransactionForm.addEventListener("submit", (e) => {
 
 function showTransactions() {
     transactions = getTransactions();
+    if (searchText !== "") {
+        transactions = transactions.filter(function (item) {
+            return item.description.toLowerCase().includes(searchText);
+        });
+    }
+
     transactionTableData.innerHTML = "";
     if (transactions.length === 0) {
         transactionTableData.innerHTML = `<tr><td colspan="5">No Transactions Found</td></tr>`;
@@ -407,7 +421,10 @@ function renderChart() {
 }
 
 
-
+searchInput.addEventListener("input", function () {
+    searchText = this.value.trim().toLowerCase();
+    refreshUI();
+});
 
 function refreshUI() {
     updateSummaryCards();
