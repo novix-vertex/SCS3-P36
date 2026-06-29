@@ -5,6 +5,7 @@ const lightRedColor = rootStyles.getPropertyValue('--light-red-color').trim();
 const textRedColor = rootStyles.getPropertyValue('--text-red-color').trim();
 const blackColor = rootStyles.getPropertyValue('--black-color').trim();
 
+const exportCsvBtn = document.querySelector("#export-csv");
 
 const authScreen = document.querySelector(".container .auth");
 const internalScreen = document.querySelector(".container .internal");
@@ -733,3 +734,38 @@ hasLoggedInUser();
 refreshUI();
 
 
+function exportCSV() {
+    const filtered = getFilteredTransactions();
+    if (filtered.length === 0) {
+        Swal.fire({
+            icon: "info",
+            title: "No Data",
+            text: "No transactions available to export."
+        });
+        return;
+    }
+    let csv = "";
+    csv += "Date,Description,Category,Type,Amount\n";
+    filtered.forEach(transaction => {
+        csv += `${transaction.date},`;
+        csv += `"${transaction.description}",`;
+        csv += `${transaction.category},`;
+        csv += `${transaction.type},`;
+        csv += `${transaction.amount}\n`;
+    });
+    downloadCSV(csv);
+}
+function downloadCSV(csv) {
+    const blob = new Blob(
+        [csv],
+        { type: "text/csv;charset=utf-8;" }
+    );
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+
+    link.download = `transactions-${Date.now()}.csv`;
+    link.click();
+    URL.revokeObjectURL(url);
+}
+exportCsvBtn.addEventListener("click", exportCSV);
