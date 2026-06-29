@@ -51,6 +51,9 @@ const settingsCurrency = document.querySelector("#settings-currency");
 
 const resetData = document.querySelector("#reset-data");
 
+const themeToggle = document.querySelector("#theme-toggle");
+const themeText = document.querySelector(".theme-text");
+
 let editingTransactionId = null;
 let cashFlowChart = null;
 
@@ -233,6 +236,7 @@ function loginUser(e) {
         email: existingUser.email,
         settings: existingUser.settings
     };
+    applyTheme(currentUser.settings.theme);
     localStorage.setItem("currentUser", JSON.stringify(currentUser));
     Swal.fire({
         icon: "success",
@@ -598,13 +602,32 @@ function settings() {
 
     settingsName.value = currentUser.name;
     settingsCurrency.value = currentUser.settings.currency;
+    applyTheme(currentUser.settings.theme);
 }
 
+function applyTheme(theme) {
+    document.body.classList.toggle("dark", (theme === "dark"));
+    themeToggle.checked = (theme === "dark");
+    themeText.textContent = (theme === "dark") ? "Dark Mode" : "Light Mode";
+}
 
+themeToggle.addEventListener("change", function () {
+    const theme = this.checked ? "dark" : "light";
+    currentUser.settings.theme = theme;
+    const index = users.findIndex(user => user.id === currentUser.id);
+    if (index !== -1) {
+        users[index].settings.theme = theme;
+    }
+    saveUsers();
+    localStorage.setItem("currentUser", JSON.stringify(currentUser));
+    applyTheme(theme);
+
+});
 
 
 function hasLoggedInUser() {
     if (currentUser && currentUser.id) {
+        applyTheme(currentUser.settings.theme);
         showCard(internalScreen, authScreen);
         loggedInUserName.textContent = `Welcome ${currentUser.name}!`;
     } else {

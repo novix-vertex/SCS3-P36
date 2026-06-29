@@ -33,6 +33,35 @@
     --modal-background-color: #00000080;
 }
 
+.dark {
+    --background-color: #0f1115;
+    --text-color: #e5e7eb;
+    --text-light-gray-color: #9ca3af;
+
+    --sidebar-background-color: #161a22;
+    --card-background-color: #161a22;
+
+    --border-color: #2a2f3a;
+    --border-gray-color: #3a3f4a;
+
+    --black-color: #000000;
+    --white-color: #ffffff;
+
+    --light-blue-color: #1e3a8a;
+    --text-blue-color: #93c5fd;
+    --link-blue-color: #60a5fa;
+
+    --light-green-color: #14532d;
+    --text-green-color: #86efac;
+    --btn-green-color: #22c55e;
+
+    --light-red-color: #7f1d1d;
+    --text-red-color: #fca5a5;
+
+    --card-box-shadow-color: #00000066;
+    --modal-background-color: #000000b3;
+}
+
 * {
     margin: 0;
     padding: 0;
@@ -266,9 +295,10 @@ main {
 .nav-right #logout-btn {
     padding: 0.5rem 1rem;
 
-    border: 1px solid var(--border-gray-color);
+    border: 1px solid var(--light-red-color);
+    background-color: var(--light-red-color);
+    color: var(--text-red-color);
     border-radius: 0.375rem;
-    background: transparent;
     cursor: pointer;
 
     display: flex;
