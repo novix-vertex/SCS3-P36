@@ -429,6 +429,12 @@ main {
     gap: 1.25rem;
 }
 
+#view-settings .content {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.25rem;
+}
+
 .content .left {
     display: flex;
     flex-direction: column;
@@ -680,7 +686,7 @@ td {
     display: flex;
     justify-content: center;
     flex-direction: column;
-    gap: 0.875rem;
+    gap: 1rem;
 }
 
 .container .settings .preference .preference-item {
