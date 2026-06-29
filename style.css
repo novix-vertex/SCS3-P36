@@ -744,3 +744,11 @@ button:active {
     cursor: pointer;
     padding-inline: 1rem;
 }
+
+.watch {
+    background-color: var(--light-blue-color);
+    padding: 1rem;
+    color: var(--link-blue-color);
+    font-size: 1rem;
+    border-radius: 0.675rem;
+}

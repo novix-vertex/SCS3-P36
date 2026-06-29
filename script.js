@@ -788,3 +788,41 @@ function downloadCSV(csv) {
     URL.revokeObjectURL(url);
 }
 exportCsvBtn.addEventListener("click", exportCSV);
+
+
+function setTime() {
+    const timeText = document.querySelector(".cur-time");
+
+    const now = new Date();
+    const timeFormatter = new Intl.DateTimeFormat("en-IN", {
+        hour: "2-digit",
+        minute: "2-digit",
+        second: "2-digit",
+        hour12: true
+    });
+
+    const formattedTime = timeFormatter.format(now);
+    timeText.innerHTML = `${formattedTime}`;
+}
+function setDate() {
+    const dateText = document.querySelector(".cur-date");
+
+    const now = new Date();
+    const dateFormatter = new Intl.DateTimeFormat("en-IN", {
+        weekday: "long",
+        day: "numeric",
+        month: "long",
+        year: "numeric"
+    });
+
+
+    const formattedDate = dateFormatter.format(now);
+    dateText.innerHTML = `${formattedDate}`;
+}
+
+
+setDate();
+setInterval(() => {
+    setTime();
+}, 1000);
+
