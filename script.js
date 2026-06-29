@@ -1,3 +1,11 @@
+const rootElement = document.documentElement;
+const rootStyles = getComputedStyle(rootElement);
+const lightGreenColor = rootStyles.getPropertyValue('--light-green-color').trim();
+const lightRedColor = rootStyles.getPropertyValue('--light-red-color').trim();
+const textRedColor = rootStyles.getPropertyValue('--text-red-color').trim();
+const blackColor = rootStyles.getPropertyValue('--black-color').trim();
+
+
 const authScreen = document.querySelector(".container .auth");
 const internalScreen = document.querySelector(".container .internal");
 
@@ -252,11 +260,24 @@ function loginUser(e) {
 loginForm.addEventListener("submit", (e) => { loginUser(e) });
 
 logoutBtn.addEventListener("click", () => {
-    localStorage.removeItem("currentUser");
-    currentUser = {};
-    transactions = [];
-    showCard(authScreen, internalScreen);
-    applyTheme("light");
+
+    Swal.fire({
+        title: "Logout",
+        text: "Are you sure you want to logout?",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Logout",
+        confirmButtonColor: textRedColor
+    }).then((result) => {
+        if (result.isConfirmed) {
+            localStorage.removeItem("currentUser");
+            currentUser = {};
+            transactions = [];
+            showCard(authScreen, internalScreen);
+            applyTheme("light");
+        }
+    });
+
 });
 
 addTransactionBtn.addEventListener("click", () => {
@@ -331,7 +352,21 @@ function updateSettings(e) {
     loggedInUserName.textContent = `Welcome ${currentUser.name}!`;
     refreshUI();
 }
-settingsForm.addEventListener("submit", (e) => { updateSettings(e) });
+settingsForm.addEventListener("submit", (e) => {
+    Swal.fire({
+        title: "Save Changes",
+        text: "Are you sure you save these profile changes?",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Save Changes",
+        confirmButtonColor: blackColor
+    }).then((result) => {
+        if (result.isConfirmed) {
+            updateSettings(e)
+        }
+    });
+
+});
 
 
 function addTransaction(e) {
@@ -544,7 +579,7 @@ function renderChart() {
             datasets: [{
                 label: "Amount",
                 data: [incomeVal, expenseVal],
-                backgroundColor: ["#28a745", "#fee2e2"],
+                backgroundColor: [lightGreenColor, lightRedColor],
                 borderRadius: 8
             }]
         },
@@ -642,7 +677,7 @@ resetData.addEventListener("click", () => {
         icon: "warning",
         showCancelButton: true,
         confirmButtonText: "Reset",
-        confirmButtonColor: "#991b1b"
+        confirmButtonColor: textRedColor
     }).then((result) => {
         if (result.isConfirmed) {
             performReset();

@@ -543,8 +543,19 @@ td {
     color: var(--text-blue-color);
 }
 
+.edit-ic:hover {
+    background-color: var(--light-blue-color);
+    padding-block: 0.5rem;
+}
+
+
 .delete-ic {
     color: var(--text-red-color);
+}
+
+.delete-ic:hover {
+    background-color: var(--light-red-color);
+    padding-block: 0.5rem;
 }
 
 .modal {
@@ -710,4 +721,8 @@ td {
 
 .container .settings .preference #theme-toggle {
     cursor: pointer;
+}
+
+button:active {
+    transform: scale(0.97);
 }
