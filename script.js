@@ -27,6 +27,9 @@ const transactionAmountInp = document.querySelector("#form-add-transaction #tran
 const transactionDateInp = document.querySelector("#form-add-transaction #transaction-date");
 const transactionCategoryInp = document.querySelector("#form-add-transaction #transaction-category");
 
+const typeFilter = document.querySelector("#type-filter");
+
+
 let users = [];
 let transactions = [];
 let currentUser = JSON.parse(localStorage.getItem("currentUser")) || {};
@@ -45,7 +48,7 @@ let income = 0;
 let expense = 0;
 
 let searchText = "";
-
+let currentFilter = "all";
 
 function showCard(show, hide) {
     if (hide != null) {
@@ -306,6 +309,11 @@ function showTransactions() {
             return item.description.toLowerCase().includes(searchText);
         });
     }
+    if (currentFilter !== "all") {
+        transactions = transactions.filter(item =>
+            item.type === currentFilter
+        );
+    }
 
     transactionTableData.innerHTML = "";
     if (transactions.length === 0) {
@@ -426,11 +434,15 @@ searchInput.addEventListener("input", function () {
     refreshUI();
 });
 
-function refreshUI() {
-    updateSummaryCards();
-    showTransactions();
-    renderChart();
+typeFilter.addEventListener("change", function () {
+    currentFilter = this.value;
+    refreshUI();
+});
 
+function refreshUI() {
+    showTransactions();
+    updateSummaryCards();
+    renderChart();
 }
 refreshUI();
 
