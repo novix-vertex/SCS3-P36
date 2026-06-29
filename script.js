@@ -28,6 +28,7 @@ const transactionDateInp = document.querySelector("#form-add-transaction #transa
 const transactionCategoryInp = document.querySelector("#form-add-transaction #transaction-category");
 
 const typeFilter = document.querySelector("#type-filter");
+const categoryFilter = document.querySelector("#category-filter");
 
 
 let users = [];
@@ -48,7 +49,8 @@ let income = 0;
 let expense = 0;
 
 let searchText = "";
-let currentFilter = "all";
+let typeFilterValue = "all";
+let categoryFilterValue = "all";
 
 function showCard(show, hide) {
     if (hide != null) {
@@ -309,9 +311,14 @@ function showTransactions() {
             return item.description.toLowerCase().includes(searchText);
         });
     }
-    if (currentFilter !== "all") {
+    if (typeFilterValue !== "all") {
         transactions = transactions.filter(item =>
-            item.type === currentFilter
+            item.type === typeFilterValue
+        );
+    }
+    if (categoryFilterValue !== "all") {
+        transactions = transactions.filter(item =>
+            item.category === categoryFilterValue
         );
     }
 
@@ -435,7 +442,12 @@ searchInput.addEventListener("input", function () {
 });
 
 typeFilter.addEventListener("change", function () {
-    currentFilter = this.value;
+    typeFilterValue = this.value;
+    refreshUI();
+});
+
+categoryFilter.addEventListener("change", function () {
+    categoryFilterValue = this.value;
     refreshUI();
 });
 
