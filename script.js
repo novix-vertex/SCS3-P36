@@ -106,12 +106,18 @@ function getTransactions() {
 }
 
 function saveTransactions() {
-    localStorage.setItem("transactions", JSON.stringify(transactions));
+    const allTransactions = JSON.parse(localStorage.getItem("transactions")) || [];
+    const others = allTransactions.filter(t => t.uid !== currentUser.id);
+    const updated = [...others, ...transactions];
+    localStorage.setItem("transactions", JSON.stringify(updated));
 }
 
 users = getUsers();
-transactions = getTransactions();
-
+if (currentUser && currentUser.id) {
+    transactions = getTransactions().filter(t => t.uid === currentUser.id);
+} else {
+    transactions = [];
+}
 
 function registerUser(e) {
     e.preventDefault();
@@ -234,11 +240,15 @@ function loginUser(e) {
     loginForm.reset();
     showCard(internalScreen, authScreen);
     loggedInUserName.textContent = `Welcome ${currentUser.name}!`;
+    transactions = getTransactions().filter(t => t.uid === currentUser.id);
+    refreshUI();
 }
 loginForm.addEventListener("submit", (e) => { loginUser(e) });
 
 logoutBtn.addEventListener("click", () => {
     localStorage.removeItem("currentUser");
+    currentUser = {};
+    transactions = [];
     showCard(authScreen, internalScreen);
 });
 
@@ -348,12 +358,14 @@ function addTransaction(e) {
     };
 
     if (editingTransactionId != null) {
-        const index = transactions.findIndex((transaction) => {
-            return transaction.id == editingTransactionId;
-        });
+        const index = transactions.findIndex(transaction => transaction.id === editingTransactionId);
 
         if (index != -1) {
-            transactions[index] = transaction;
+            transactions[index] = {
+                ...transaction,
+                uid: currentUser.id,
+                id: editingTransactionId
+            };
         }
         editingTransactionId = null;
         saveTransactions();
@@ -386,29 +398,30 @@ AddTransactionForm.addEventListener("submit", (e) => {
 });
 
 function showTransactions() {
-    transactions = getTransactions();
+    let filtered = [...transactions];
+
     if (searchText !== "") {
-        transactions = transactions.filter(function (item) {
+        filtered = filtered.filter(function (item) {
             return item.description.toLowerCase().includes(searchText);
         });
     }
     if (typeFilterValue !== "all") {
-        transactions = transactions.filter(item =>
+        filtered = filtered.filter(item =>
             item.type === typeFilterValue
         );
     }
     if (categoryFilterValue !== "all") {
-        transactions = transactions.filter(item =>
+        filtered = filtered.filter(item =>
             item.category === categoryFilterValue
         );
     }
 
     transactionTableData.innerHTML = "";
-    if (transactions.length === 0) {
+    if (filtered.length === 0) {
         transactionTableData.innerHTML = `<tr><td colspan="5">No Transactions Found</td></tr>`;
         return;
     }
-    transactions.forEach(function (transaction) {
+    filtered.forEach(function (transaction) {
         let tr = document.createElement("tr");
         tr.innerHTML += `<td>${transaction.date}</td>
                          <td>${transaction.description}</td>
@@ -445,10 +458,7 @@ transactionTableData.addEventListener("click", function (e) {
 
 function deleteTransaction(id) {
     id = Number(id);
-    transactions =
-        transactions.filter(function (item) {
-            return item.id !== id;
-        });
+    transactions = transactions.filter(item => item.id !== id);
     saveTransactions();
     refreshUI();
 }
@@ -474,14 +484,29 @@ function formatCurrency(amount) {
     }).format(amount);
 }
 function updateSummaryCards() {
-    income = transactions.reduce((sum, transaction) => {
+    let filtered = [...transactions];
+
+    if (searchText !== "") {
+        filtered = filtered.filter(t =>
+            t.description.toLowerCase().includes(searchText)
+        );
+    }
+
+    if (typeFilterValue !== "all") {
+        filtered = filtered.filter(t => t.type === typeFilterValue);
+    }
+
+    if (categoryFilterValue !== "all") {
+        filtered = filtered.filter(t => t.category === categoryFilterValue);
+    }
+    income = filtered.reduce((sum, transaction) => {
         if (transaction.type === "income") {
             return sum += transaction.amount;
         }
         return sum;
     }, 0);
 
-    expense = transactions.reduce((sum, transaction) => {
+    expense = filtered.reduce((sum, transaction) => {
         if (transaction.type === "expense") {
             return sum += transaction.amount;
         }
@@ -491,11 +516,35 @@ function updateSummaryCards() {
     statIncome.textContent = formatCurrency(income);
     statExpense.textContent = formatCurrency(expense);
     statBalance.textContent = formatCurrency(income - expense);
-    statCount.textContent = transactions.length;
+    statCount.textContent = filtered.length;
 
 }
 
 function renderChart() {
+    let filtered = [...transactions];
+
+    if (searchText !== "") {
+        filtered = filtered.filter(t =>
+            t.description.toLowerCase().includes(searchText)
+        );
+    }
+
+    if (typeFilterValue !== "all") {
+        filtered = filtered.filter(t => t.type === typeFilterValue);
+    }
+
+    if (categoryFilterValue !== "all") {
+        filtered = filtered.filter(t => t.category === categoryFilterValue);
+    }
+
+    const incomeVal = filtered
+        .filter(t => t.type === "income")
+        .reduce((a, b) => a + b.amount, 0);
+
+    const expenseVal = filtered
+        .filter(t => t.type === "expense")
+        .reduce((a, b) => a + b.amount, 0);
+
     const canvas = document.querySelector("#chart-canvas");
     if (cashFlowChart) {
         cashFlowChart.destroy();
@@ -506,7 +555,7 @@ function renderChart() {
             labels: ["Income", "Expense"],
             datasets: [{
                 label: "Amount",
-                data: [income, expense],
+                data: [incomeVal, expenseVal],
                 backgroundColor: ["#28a745", "#fee2e2"],
                 borderRadius: 8
             }]
@@ -547,6 +596,13 @@ navMenu.addEventListener("click", function (e) {
     if (!navItem) {
         return;
     }
+
+    document.querySelectorAll(".nav-item").forEach(item => {
+        item.classList.remove("active");
+    });
+
+    navItem.classList.add("active");
+
     if (navItem.id === "nav-dashboard") {
         showCard(dashboardView, settingsView);
     } else if (navItem.id === "nav-settings") {
@@ -555,8 +611,22 @@ navMenu.addEventListener("click", function (e) {
 });
 
 function settings() {
+    if (!currentUser || !currentUser.id) return;
+
     settingsName.value = currentUser.name;
     settingsCurrency.value = currentUser.settings.currency;
+}
+
+
+
+
+function hasLoggedInUser() {
+    if (currentUser && currentUser.id) {
+        showCard(internalScreen, authScreen);
+        loggedInUserName.textContent = `Welcome ${currentUser.name}!`;
+    } else {
+        showCard(authScreen, internalScreen);
+    }
 }
 
 function refreshUI() {
@@ -565,17 +635,7 @@ function refreshUI() {
     updateSummaryCards();
     renderChart();
 }
+hasLoggedInUser();
 refreshUI();
 
 
-
-
-function hasLoggedInUser() {
-    if (currentUser) {
-        showCard(internalScreen, authScreen);
-        loggedInUserName.textContent = `Welcome ${currentUser.name}!`;
-    } else {
-        showCard(authScreen, internalScreen);
-    }
-}
-hasLoggedInUser();
