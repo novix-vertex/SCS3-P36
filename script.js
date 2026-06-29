@@ -49,6 +49,8 @@ const searchInput = document.querySelector("#search-input");
 const settingsName = document.querySelector("#settings-name");
 const settingsCurrency = document.querySelector("#settings-currency");
 
+const resetData = document.querySelector("#reset-data");
+
 let editingTransactionId = null;
 let cashFlowChart = null;
 
@@ -397,24 +399,32 @@ AddTransactionForm.addEventListener("submit", (e) => {
     addTransaction(e);
 });
 
-function showTransactions() {
+function getFilteredTransactions() {
     let filtered = [...transactions];
 
     if (searchText !== "") {
-        filtered = filtered.filter(function (item) {
-            return item.description.toLowerCase().includes(searchText);
-        });
+        filtered = filtered.filter(item =>
+            item.description.toLowerCase().includes(searchText)
+        );
     }
+
     if (typeFilterValue !== "all") {
         filtered = filtered.filter(item =>
             item.type === typeFilterValue
         );
     }
+
     if (categoryFilterValue !== "all") {
         filtered = filtered.filter(item =>
             item.category === categoryFilterValue
         );
     }
+
+    return filtered;
+}
+
+function showTransactions() {
+    const filtered = getFilteredTransactions();
 
     transactionTableData.innerHTML = "";
     if (filtered.length === 0) {
@@ -484,21 +494,8 @@ function formatCurrency(amount) {
     }).format(amount);
 }
 function updateSummaryCards() {
-    let filtered = [...transactions];
+    const filtered = getFilteredTransactions();
 
-    if (searchText !== "") {
-        filtered = filtered.filter(t =>
-            t.description.toLowerCase().includes(searchText)
-        );
-    }
-
-    if (typeFilterValue !== "all") {
-        filtered = filtered.filter(t => t.type === typeFilterValue);
-    }
-
-    if (categoryFilterValue !== "all") {
-        filtered = filtered.filter(t => t.category === categoryFilterValue);
-    }
     income = filtered.reduce((sum, transaction) => {
         if (transaction.type === "income") {
             return sum += transaction.amount;
@@ -521,21 +518,7 @@ function updateSummaryCards() {
 }
 
 function renderChart() {
-    let filtered = [...transactions];
-
-    if (searchText !== "") {
-        filtered = filtered.filter(t =>
-            t.description.toLowerCase().includes(searchText)
-        );
-    }
-
-    if (typeFilterValue !== "all") {
-        filtered = filtered.filter(t => t.type === typeFilterValue);
-    }
-
-    if (categoryFilterValue !== "all") {
-        filtered = filtered.filter(t => t.category === categoryFilterValue);
-    }
+    const filtered = getFilteredTransactions();
 
     const incomeVal = filtered
         .filter(t => t.type === "income")
@@ -627,6 +610,54 @@ function hasLoggedInUser() {
     } else {
         showCard(authScreen, internalScreen);
     }
+}
+resetData.addEventListener("click", () => {
+    Swal.fire({
+        title: "Reset all data?",
+        text: "All your transactions will be deleted and settings will be restored.",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Reset",
+        confirmButtonColor: "#991b1b"
+    }).then((result) => {
+        if (result.isConfirmed) {
+            performReset();
+        }
+    });
+});
+
+function performReset() {
+
+    transactions = [];
+    saveTransactions();
+
+    currentUser.settings = {
+        currency: "INR",
+        theme: "light"
+    };
+
+    const index = users.findIndex(user => user.id === currentUser.id);
+
+    if (index !== -1) {
+        users[index].settings = currentUser.settings;
+    }
+
+    saveUsers();
+    localStorage.setItem(
+        "currentUser",
+        JSON.stringify(currentUser)
+    );
+
+    settingsCurrency.value = "INR";
+
+    refreshUI();
+
+    Swal.fire({
+        icon: "success",
+        title: "Reset Successful",
+        text: "Your transactions and settings have been reset."
+    });
+
 }
 
 function refreshUI() {
